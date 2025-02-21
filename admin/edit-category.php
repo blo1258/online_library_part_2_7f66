@@ -30,7 +30,7 @@ $dbh = new PDO("mysql:host=localhost;dbname=library;charset=utf8", 'root', 'root
     
     // On execute la requete
    
-    $query->bindParam(':identifiant', $identifiant, PDO::PARAM_STR);
+    $query->bindParam(':identifiant', $identifiant, PDO::PARAM_INT);
     $query->bindParam(':category', $category, PDO::PARAM_STR);
     $query->bindParam(':status', $status, PDO::PARAM_INT);
     $query->execute();
@@ -90,7 +90,7 @@ $identifiant = isset($_POST['id']) ? $_POST['id'] : '';
                             <?php } ?>
                             <!-- On recupere l'identifiant de la categorie-->
                             <?php
-                            $identifiant = $_POST['id'];
+                          
                             $sql = "SELECT * FROM tblcategory WHERE id=:identifiant";
                             // On prepare la requete de recherche des elements de la categorie dans tblcategory
                             $query = $dbh->prepare($sql);
