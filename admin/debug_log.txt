@@ -62,3 +62,7 @@
 🛠️ TEST: error_log() ÇALIŞIYOR!
 🛠️ TEST: error_log() ÇALIŞIYOR!
 🛠️ TEST: error_log() ÇALIŞIYOR!
+🛠️ TEST: error_log() ÇALIŞIYOR!
+🛠️ TEST: error_log() ÇALIŞIYOR!
+🛠️ TEST: error_log() ÇALIŞIYOR!
+🛠️ TEST: error_log() ÇALIŞIYOR!
