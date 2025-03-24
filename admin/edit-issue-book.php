@@ -2,7 +2,7 @@
 session_start();
 
 error_log("🛠️ TEST: error_log() ÇALIŞIYOR!");
-file_put_contents("debug_log.txt", "🛠️ TEST: error_log() ÇALIŞIYOR!\n", FILE_APPEND);
+file_put_contents("debug_log.txt", "🛠️ TEST: error_log() Marche!\n", FILE_APPEND);
 
 
 global $dbh;
@@ -15,17 +15,17 @@ if (!isset($_SESSION['alogin'])) {
       exit;
   }
   if ($_SERVER['REQUEST_METHOD'] == "POST") {
-      $bookId = isset($_POST['BookId']) ? $_POST['BookId'] : '';
+      $ISBNNumber = isset($_POST['ISBNNumber']) ? $_POST['ISBNNumber'] : '';
       $readerId = isset($_POST['ReaderId']) ? $_POST['ReaderId'] : '';
 
-      if (empty($readerId) || empty($bookId)) {
+      if (empty($readerId) || empty($ISBNNumber)) {
           $_SESSION['message'] = "Tous les champs sont obligatoires";
           header('location:edit-issue-book.php');
           exit;
       } else {
-            $sql = "INSERT INTO tblissuedbookdetails(BookId, ReaderId) VALUES (:BookId, :ReaderId)";
+            $sql = "INSERT INTO tblissuedbookdetails(ISBNNumber, ReaderId) VALUES (:ISBNNumber, :ReaderId)";
             $query = $dbh->prepare($sql);
-            $query->bindParam(':BookId', $bookId, PDO::PARAM_STR);
+            $query->bindParam(':ISBNNumber', $ISBNNumber, PDO::PARAM_STR);
             $query->bindParam(':ReaderId', $readerId, PDO::PARAM_STR);
             
             if ($query->execute()) {
@@ -78,7 +78,7 @@ if (!isset($_SESSION['alogin'])) {
             </div>
             <div class="form-group">
                 <label for="BookId">Numero ISBN<span style="color:red;">*</span></label>
-                <input type="text" class="form-control" id="BookId" name="BookId" required>
+                <input type="text" class="form-control" id="ISBNNumber" name="ISBNNumber" required>
                 <small id="BookName" class="form-text text-muted"></small>
             </div>
             <button type="submit" name="submit" class="btn btn-primary">Sortir le livre</button>
@@ -93,7 +93,7 @@ if (!isset($_SESSION['alogin'])) {
       
       document.addEventListener("DOMContentLoaded", function() {
             let readerId = document.getElementById('ReaderId');
-            let bookId = document.getElementById('BookId');
+            let ISBNNumber = document.getElementById('ISBNNumber');
             let readerName = document.getElementById('readerName');
             let bookName = document.getElementById('BookName');
 
@@ -146,9 +146,9 @@ if (!isset($_SESSION['alogin'])) {
             }
       });
      });      
+     body: 'ISBNNumber=' + encodeURIComponent(ISBNNumberValue)
 
-     console.log(document.getElementById("BookId"));
-      console.log(document.getElementById("ReaderId"));
+    
 
 </script>
      <!-- CONTENT-WRAPPER SECTION END-->

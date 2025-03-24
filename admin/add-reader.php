@@ -4,6 +4,9 @@ global $dbh;
 $dbh = new PDO("mysql:host=localhost;dbname=library;charset=utf8", 'root', 'root');
 
 
+
+
+
 if (!isset($_SESSION['alogin'])) {
     $_SESSION['msg'] = "Erreur: ID du livre manquant!";
     header('location:/online_library_part_1/adminlogin.php');
@@ -12,28 +15,31 @@ if (!isset($_SESSION['alogin'])) {
       // Si le formulaire a été soumis
       if (isset($_POST['submit'])) {
           // On recupere le nom et le statut de la categorie
-        
+          $readerId = "SID" . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
+
           $fullName = $_POST['FullName'];
           $status = $_POST['Status'];
-          
+          $password = isset($_POST['Password']) && !empty($_POST['Password']) ? $_POST['Password'] : "default123";
+          $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
           $mobilNumber = $_POST['MobileNumber'];
           $email = isset($_POST['EmailId']) ? $_POST['EmailId'] : null;
 
          
           // On prepare la requete d'insertion dans la table tblcategory
-          $sql = "INSERT INTO tblreaders(fullName,status,mobilNumber,email) VALUES (:FullName,:Status,:MobileNumber,:EmailId)";
+          $sql = "INSERT INTO tblreaders(ReaderId,FullName,Status,MobileNumber,EmailId,Password) 
+          VALUES (:ReaderId,:FullName,:Status,:MobileNumber,:EmailId,:Password)";
           $query = $dbh->prepare($sql);
           
           // On recupere le nom et le statut de la categorie
           // On prepare la requete d'insertion dans la table tblcategory
           // On execute la requete
-          
-  
-  $query->bindParam(':FullName', $fullName, PDO::PARAM_STR);
-  $query->bindParam(':Status', $status, PDO::PARAM_INT);
-  
-  $query->bindParam(':MobileNumber', $mobilNumber, PDO::PARAM_STR);
-  $query->bindParam(':EmailId', $email, PDO::PARAM_STR);
+    
+            $query->bindParam(':FullName', $fullName, PDO::PARAM_STR);
+            $query->bindParam(':Status', $status, PDO::PARAM_INT);
+            $query->bindParam(':ReaderId', $readerId, PDO::PARAM_STR);
+            $query->bindParam(':MobileNumber', $mobilNumber, PDO::PARAM_STR);
+            $query->bindParam(':EmailId', $email, PDO::PARAM_STR);
+            $query->bindParam(':Password', $password, PDO::PARAM_STR);
 
       if ($query->execute()) {
           $_SESSION['message'] = "Lecteur ajouté avec succès";
@@ -92,8 +98,8 @@ if (!isset($_SESSION['alogin'])) {
             
         </div>
         <div class="form-group">
-            <label for="tlf">Numero de Telephone <span style="color: red;">*</span></label>
-            <input type="text" class="form-control" id="tlf" name="MobileNumber" required>
+            <label for="mobilNumber">Numero de Telephone <span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="mobilNumber" name="MobileNumber" required>
             
         </div>
         <div class="form-group">

@@ -101,8 +101,9 @@ function valid() {
 <?php
 $sql = "SELECT tblissuedbookdetails.id as isid, tblreaders.FullName as fullname, tblbooks.BookName as bookname, 
 tblbooks.ISBNNumber as isbn, tblissuedbookdetails.IssuesDate as idate, tblissuedbookdetails.ReturnDate as rdate 
-from tblissuedbookdetails join tblreaders on tblreaders.ReaderId=tblissuedbookdetails.ReaderId join tblbooks on 
-tblbooks.id=tblissuedbookdetails.BookId";
+from tblissuedbookdetails join tblreaders on tblreaders.ReaderId=tblissuedbookdetails.ReaderId 
+JOIN tblbooks ON tblbooks.ISBNNumber = tblissuedbookdetails.ISBNNumber";
+
 $query = $dbh->prepare($sql);
 $query->execute();
 $books = $query->fetchAll(PDO::FETCH_ASSOC);
